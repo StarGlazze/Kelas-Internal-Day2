@@ -19,16 +19,18 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>1</td>
-                <td>Judul 1</td>
-                <td>Isi 1</td>
-                <td>
-                    <a href="edit-post">Edit</a>
-                    <a href="#">Detail</a>
-                    <a href="#">Delete</a>
-                </td>
-            </tr>
+            @foreach ($dataPost as $item) 
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $item->judul }}</td>
+                    <td>{{ $item->isi }}</td>
+                    <td>
+                        <a href="edit-post/{{ $item->id }}">Edit</a>
+                        <a href="#">Detail</a>
+                        <a href="#">Delete</a>
+                    </td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
     <a href="tambah-post">Tambah Post</a>

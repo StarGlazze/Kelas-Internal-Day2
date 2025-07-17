@@ -6,8 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
+
 <body>
     <h1>Tambah Post dulu</h1>
-    <a href ="posts">Kembali ke post</a>
+    <a href ="/posts">Kembali ke post</a>
+
+    <form action="/store" method="post">
+        @csrf
+        <label for="judul">Judul:</label>
+        <input type="text" name="judul" id="judul">
+        <br>
+        <label for="isi">Isi:</label>
+        <textarea name="isi" id="isi" rows="4"></textarea>
+        <br>
+        <button type="submit">Simpan</button>
+    </form>    
 </body>
+
 </html>
