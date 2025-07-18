@@ -40,4 +40,18 @@ class PostController extends Controller
         $post->update($request->all());
         return redirect('/posts');
     }
+    public function show($id)
+    {
+        $post = Post::find($id);
+
+        return view('detail-postingan', [
+            'postingan' => $post
+        ]);
+    }
+    public function destroy($id)
+    {
+        $post = Post::find($id);
+        $post->delete();
+        return redirect('/posts');
+    }
 }
