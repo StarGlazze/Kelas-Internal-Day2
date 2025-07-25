@@ -27,8 +27,8 @@
                     <td>{{ $item->email }}</td>
                     <td>{{ $item->password }}</td>
                     <td>
-                        <a href="/edit-user/{{ $item->id }}">Edit</a>
-                        <form action="/delete-user/{{ $item->id }}" method="post">
+                        <a href="{{ route('users.edit', $item->id) }}">Edit</a> |
+                        <form style="display:inline" action="{{ route('users.destroy', $item->id) }}" method="post">
                             @csrf
                             @method('DELETE')
                             <button type="submit" onclick="return confirm('Yakin ingin menghapus??')">Delete</button>
@@ -38,7 +38,7 @@
             @endforeach
         </tbody>
     </table>
-    <a href="tambah-user">Tambah User</a>
+    <a href="{{ route('users.create') }}">Tambah User</a>
 </body>
 
 </html>

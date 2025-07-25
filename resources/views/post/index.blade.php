@@ -19,16 +19,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($dataPost as $item) 
+            @foreach ($dataPost as $item)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->judul }}</td>
                     <td>{{ $item->isi }}</td>
                     <td>
-                        <a href="/edit-post/{{ $item->id }}">Edit</a>
-                        <a href="/detail-post/{{ $item->id }}">Detail</a>
-                        {{-- <a href="#">Delete</a> --}}
-                        <form action="/delete-post/{{ $item->id }}" method="post">
+                        <a href="{{ route('posts.edit', $item->id) }}">Edit</a>
+                        <a href="{{ route('posts.show', $item->id) }}">Detail</a>
+                        <form action="{{ route('posts.destroy', $item->id) }}" method="post" style="display:inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" onclick="return confirm('Yakin ingin menghapus??')">Delete</button>
@@ -38,7 +37,7 @@
             @endforeach
         </tbody>
     </table>
-    <a href="tambah-post">Tambah Post</a>
+    <a href="{{ route('posts.create') }}">Tambah Post</a>
 </body>
 
 </html>

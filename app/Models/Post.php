@@ -12,4 +12,9 @@ class Post extends Model
         'judul',
         'isi',
     ];
+
+    public function komentars()
+    {
+        return $this->hasMany(Komentar::class);
+    }
 }

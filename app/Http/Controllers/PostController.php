@@ -10,48 +10,75 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::orderBy('id', 'desc')->get();
-        return view('post', [
+        return view('post.index', [
             'dataPost' => $posts
         ]);
     }
+
     public function create()
     {
-        return view('tambah-post');
+        return view('post.tambah-post');
     }
-    public function edit($id)
-    {
-        //dd($id);
-        $post = Post::find($id);
-        return view('edit-post' , [
-            'postingan' => $post
-        ]);
-    }
+
     public function store(Request $request)
     {
-        //dd($request->all());
-        // orm adalah Object Relational Mapping, yang digunakan untuk menghubungkan model dengan database
-        Post::create($request->all());
-        return redirect('/posts');
-    }
-    public function update(Request $request, $id)
-    {
-        //dd($request->all());
-        $post = Post::find($id);
-        $post->update($request->all());
-        return redirect('/posts');
-    }
-    public function show($id)
-    {
-        $post = Post::find($id);
+        $request->validate(
+            [
+                'judul' => ['required', 'string', 'max:255'],
+                'isi' => ['required', 'string'],
+            ],
+            [
+                'judul.required' => 'Judul wajib diisi',
+                'judul.string' => 'Judul harus berupa teks',
+                'judul.max' => 'Judul maksimal 255 karakter',
+                'isi.required' => 'Isi postingan wajib diisi',
+                'isi.string' => 'Isi postingan harus berupa teks',
+            ]
+        );
 
-        return view('detail-postingan', [
+        Post::create($request->all());
+        return redirect()->route('posts.index');
+    }
+
+    public function show(Post $post)
+    {
+        $post->load('komentars');
+        return view('post.detail-postingan', [
             'postingan' => $post
         ]);
     }
-    public function destroy($id)
+
+    public function edit(Post $post)
     {
-        $post = Post::find($id);
+        return view('post.edit-post', [
+            'postingan' => $post
+        ]);
+    }
+
+    public function update(Request $request, Post $post)
+    {
+        $request->validate(
+            [
+                'judul' => ['required', 'string', 'max:255'],
+                'isi' => ['required', 'string'],
+            ],
+            [
+                'judul.required' => 'Judul wajib diisi',
+                'judul.string' => 'Judul harus berupa teks',
+                'judul.max' => 'Judul maksimal 255 karakter',
+                'isi.required' => 'Isi postingan wajib diisi',
+                'isi.string' => 'Isi postingan harus berupa teks',
+            ]
+        );
+
+        $post->update($request->all());
+        return redirect()->route('posts.index');
+    }
+
+    public function destroy(Post $post)
+    {
+        $post->komentars()->delete();
         $post->delete();
-        return redirect('/posts');
+        return redirect()->route('posts.index');
     }
 }

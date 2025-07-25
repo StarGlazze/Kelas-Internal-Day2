@@ -47,4 +47,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function komentar()
+    {
+        return $this->hasOne(Komentar::class);
+    }
 }
