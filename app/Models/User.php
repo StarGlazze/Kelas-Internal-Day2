@@ -50,6 +50,6 @@ class User extends Authenticatable
 
     public function komentar()
     {
-        return $this->hasOne(Komentar::class);
+        return $this->hasMany(Komentar::class);
     }
 }

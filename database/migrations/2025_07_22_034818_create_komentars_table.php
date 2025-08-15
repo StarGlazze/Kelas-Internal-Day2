@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('post_id')->constrained();
             $table->foreignId('user_id')->constrained();
-            $table->string('isi')->nullable();
+            $table->text('isi')->nullable();
             $table->timestamps();
         });
     }

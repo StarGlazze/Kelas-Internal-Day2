@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -39,7 +40,7 @@ class PostController extends Controller
                 'foto.mimes' => 'Format gambar yang diperbolehkan: jpeg, png, jpg',
             ]
         );
-        
+
         $data = $request->all();
         $data['foto'] = $request->file('foto')->store('postingan', 'public');
         //dd($data);
@@ -68,6 +69,7 @@ class PostController extends Controller
             [
                 'judul' => ['required', 'string', 'max:255'],
                 'isi' => ['required', 'string'],
+                'foto' => ['nullable', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
             ],
             [
                 'judul.required' => 'Judul wajib diisi',
@@ -75,16 +77,34 @@ class PostController extends Controller
                 'judul.max' => 'Judul maksimal 255 karakter',
                 'isi.required' => 'Isi postingan wajib diisi',
                 'isi.string' => 'Isi postingan harus berupa teks',
+                'foto.image' => 'File yang diunggah harus berupa gambar',
             ]
         );
 
-        $post->update($request->all());
+        $data = $request->all();
+        if ($request->hasFile('foto')) {
+
+            if ($post->foto) {
+                Storage::disk('public')->delete($post->foto);
+            }
+
+            $data['foto'] = $request->file('foto')->store('postingan', 'public');
+        } else {
+            $data['foto'] = $post->foto;
+        }
+
+        $post->update($data);
         return redirect()->route('posts.index');
     }
 
     public function destroy(Post $post)
     {
         $post->komentars()->delete();
+
+        if ($post->foto) {
+            Storage::disk('public')->delete($post->foto);
+        }
+
         $post->delete();
         return redirect()->route('posts.index');
     }

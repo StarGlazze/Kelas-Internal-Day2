@@ -12,15 +12,24 @@
     <h1>Edit post disini</h1>
     <a href="{{ route('posts.index') }}">Kembali ke post</a>
 
-    <form action="{{ route('posts.update', $postingan->id) }}" method="post">
+
+    <form action="{{ route('posts.update', $postingan->id) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
+        @if ($postingan->foto)
+            <img src="{{ asset('storage/' . $postingan->foto) }}" alt="Foto Postingan"
+                style="max-width: 200px; max-height: 200px;">
+        @endif
+
+        <br>
+        <label for="foto">Foto</label>
+        <input type="file" name="foto" accept="image/*">
+        <br>
         <label for="judul">Judul:</label>
         <input type="text" name="judul" id="judul" value="{{ old('judul', $postingan->judul) }}">
         @error('judul')
             <div style="color: red;">{{ $message }}</div>
-            
         @enderror
         <br>
 
