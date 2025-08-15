@@ -15,7 +15,7 @@
                 <th>No</th>
                 <th>Nama</th>
                 <th>Email</th>
-                <th>Password</th>
+                {{-- <th>Password</th> --}}
                 <th>Aksi</th>
             </tr>
         </thead>
@@ -25,7 +25,7 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->email }}</td>
-                    <td>{{ $item->password }}</td>
+                    {{-- <td>{{ $item->password }}</td> --}}
                     <td>
                         <a href="{{ route('users.edit', $item->id) }}">Edit</a> |
                         <form style="display:inline" action="{{ route('users.destroy', $item->id) }}" method="post">

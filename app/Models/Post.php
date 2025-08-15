@@ -11,6 +11,7 @@ class Post extends Model
     protected $fillable = [
         'judul',
         'isi',
+        'foto',
     ];
 
     public function komentars()

@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>Foto</th>
                 <th>Judul</th>
                 <th>Isi</th>
                 <th>Aksi</th>
@@ -22,6 +23,9 @@
             @foreach ($dataPost as $item)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>
+                        <img src="{{ asset('storage/' . $item->foto) }}" style="width: 300px; height: 150px;" alt="Foto Postingan">
+                    </td>
                     <td>{{ $item->judul }}</td>
                     <td>{{ $item->isi }}</td>
                     <td>

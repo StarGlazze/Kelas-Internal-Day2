@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->string('judul');
-            $table->text('isi');
+            $table->string('judul')->nullable();
+            $table->text('isi')->nullable();
+            $table->string('foto')->nullable();
             $table->timestamps();
         });
     }

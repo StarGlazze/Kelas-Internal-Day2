@@ -12,8 +12,15 @@
     <h1>Tambah Post dulu</h1>
     <a href="{{ route('posts.index') }}">Kembali ke post</a>
 
-    <form action="{{ route('posts.store') }}" method="post">
+    <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
         @csrf
+
+        <label for="foto">Foto:</label>
+        <input type="file" name="foto" id="foto" accept="image/*" value="{{ old('foto') }}">
+        @error('foto')
+            <p style="color: red;">{{ $message }}</p>
+        @enderror
+        <br>
         <label for="judul">Judul:</label>
         <input type="text" name="judul" id="judul" value="{{ old('judul') }}">
         @error('judul')
@@ -21,7 +28,7 @@
         @enderror
         <br>
         <label for="isi">Isi:</label>
-        <textarea name="isi" id="isi" rows="4">{{old('isi')}}</textarea>
+        <textarea name="isi" id="isi" rows="4">{{ old('isi') }}</textarea>
         @error('isi')
             <p style="color: red;">{{ $message }}</p>
         @enderror
