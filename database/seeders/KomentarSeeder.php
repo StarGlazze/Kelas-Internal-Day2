@@ -13,6 +13,6 @@ class KomentarSeeder extends Seeder
      */
     public function run(): void
     {
-        Komentar::factory(100)->create();
+        Komentar::factory(50)->create();
     }
 }

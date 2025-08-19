@@ -7,15 +7,25 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use Monolog\Handler\RotatingFileHandler;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [PostController::class, 'publicIndex'])->name('home');
+Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+
+Route::middleware('auth')->group(function () {
+    Route::resource('posts', PostController::class)->except(['index','show']);
+
+    Route::resource('komentar', KomentarController::class);
+    Route::post('/komentar-store', [KomentarController::class, 'storeFromPublic'])->name('komentar.storeFromPublic');
+
+    Route::resource('users', UserController::class);
+    
+    Route::post('/do-Logout', [LoginController::class, 'doLogout'])->name('doLogout');
 });
 
-Route::resource('posts', PostController::class)->middleware('auth');
-Route::resource('komentar', KomentarController::class)->middleware('auth');
-Route::resource('users', UserController::class)->middleware('auth');
-Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
-Route::post('/do-Post', [LoginController::class, 'doPost'])->name('doPost')->middleware('guest');
-Route::post('/do-Logout', [LoginController::class, 'doLogout'])->name('doLogout')->middleware('auth');
-Route::get('/register', [LoginController::class, 'index2'])->name('register')->middleware('guest');
-Route::post('/do-Register', [LoginController::class, 'doRegister'])->name('doRegister')->middleware('guest');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::post('/do-Post', [LoginController::class, 'doPost'])->name('doPost');
+    Route::get('/register', [LoginController::class, 'index2'])->name('register');
+    Route::post('/do-Register', [LoginController::class, 'doRegister'])->name('doRegister');
+});
+
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');

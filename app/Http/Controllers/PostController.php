@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+    public function publicIndex()
+    {
+        $posts = Post::orderBy('id', 'desc')->get();
+        return view('welcome', [
+            'dataPost' => $posts
+        ]);
+    }
+    
     public function index()
     {
         $posts = Post::orderBy('id', 'desc')->get();
@@ -50,7 +58,7 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        $post->load('komentars');
+        $post->load('komentars.user');
         return view('post.detail-postingan', [
             'postingan' => $post
         ]);

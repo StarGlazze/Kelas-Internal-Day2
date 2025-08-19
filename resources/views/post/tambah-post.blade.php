@@ -10,7 +10,6 @@
 
 <body>
     <h1>Tambah Post dulu</h1>
-    <a href="{{ route('posts.index') }}">Kembali ke post</a>
 
     <form action="{{ route('posts.store') }}" method="post" enctype="multipart/form-data">
         @csrf

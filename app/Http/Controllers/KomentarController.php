@@ -6,6 +6,7 @@ use App\Models\Komentar;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KomentarController extends Controller
 {
@@ -67,6 +68,32 @@ class KomentarController extends Controller
     /**
      * Display the specified resource.
      */
+
+    public function storeFromPublic(Request $request)
+    {
+        $request->validate(
+            [
+                'post_id' => ['required', 'exists:posts,id'],
+                'isi' => ['required', 'string']
+            ],
+            [
+                'post_id.required' => 'Postingan harus dipilih',
+                'post_id.exists' => 'Postingan tidak ditemukan',
+                'isi.required' => 'Isi komentar tidak boleh kosong',
+                'isi.string' => 'Isi komentar harus berupa teks'
+            ]
+        );
+
+        Komentar::create([
+            'post_id' => $request->post_id,
+            'user_id' => Auth::id(),
+            'isi' => $request->isi,
+        ]);
+
+        return redirect()->route('posts.show', $request->post_id)
+            ->with('success', 'Komentar berhasil ditambahkan');
+    }
+
     public function show(Komentar $komentar)
     {
         return view('komentar.show', [
@@ -94,7 +121,7 @@ class KomentarController extends Controller
      */
     public function update(Request $request, Komentar $komentar)
     {
-                $request->validate(
+        $request->validate(
             [
                 'post_id' => ['required', 'exists:posts,id'],
                 'user_id' => ['required', 'exists:users,id'],
@@ -121,7 +148,7 @@ class KomentarController extends Controller
     {
         $komentar->delete();
         return redirect()
-        ->route('komentar.index')
-        ->with('success', 'Komentar berhasil dihapus');
+            ->route('komentar.index')
+            ->with('success', 'Komentar berhasil dihapus');
     }
 }
