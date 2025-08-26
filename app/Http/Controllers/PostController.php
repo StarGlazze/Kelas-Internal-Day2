@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+    
     public function publicIndex()
     {
         $posts = Post::orderBy('id', 'desc')->get();

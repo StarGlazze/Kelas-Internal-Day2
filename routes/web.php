@@ -26,6 +26,9 @@ Route::middleware('guest')->group(function () {
     Route::post('/do-Post', [LoginController::class, 'doPost'])->name('doPost');
     Route::get('/register', [LoginController::class, 'index2'])->name('register');
     Route::post('/do-Register', [LoginController::class, 'doRegister'])->name('doRegister');
+    Route::get('/test', function () {
+        return view('tesss');
+    })->name('test');
 });
 
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
